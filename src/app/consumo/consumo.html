@@ -1,0 +1,20 @@
+<p>consumo works!</p>
+
+<h1>Lista de productos</h1>
+
+<div class="productos">
+    @if (productoResource.isLoading()){
+        <p>Loading....</p>
+    }
+    @else if (productoResource.error()) {
+        <p>Error al cargar productos</p>
+    }@else {
+        <div class="productos">
+            @let productList = productoResource.value();
+
+            @for (item of productList?.content; track item) {
+                {{ item.nombre }}
+            }
+        </div>
+    }
+</div>

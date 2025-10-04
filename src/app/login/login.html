@@ -1,0 +1,32 @@
+<nav class="navbar navbar-expand-lg" style="background-color: #7a1f1f;">
+    <div class="container-fluid">
+        <a class="navbar-brand text-white fw-bold" href="#">Happydrink - Licorería</a>        
+    </div>
+</nav>
+
+<div class="login-container">
+    <div class="card login-card shadow-lg">
+        <h2 class="text-center text-white mb-4">Iniciar Sesión</h2>
+
+    <form (ngSubmit)="onLogin()">
+
+        <div class="mb-3">
+            <label class="form-label text-white">Usuario</label>
+            <input [(ngModel)]="form.username" name="username" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label text-white">Contraseña</label>
+            <input [(ngModel)]="form.password" name="password" type="password" class="form-control" required />
+        </div>
+        <div class="d-grid">
+            <button type="submit" class="btn btn-light fw-bold">Ingresar</button>
+        </div>
+
+    </form>
+
+
+    @if (error) {
+        <div class="text-center text-warning mt-3">{{ error }}</div>
+    }
+    </div>
+</div>
