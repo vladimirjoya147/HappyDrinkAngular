@@ -1,0 +1,48 @@
+<div class="container mt-4">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+  <!-- 🔹 Izquierda -->
+  <div class="d-flex align-items-center gap-3">
+    <h4 class="mb-0">Gestor de Clientes</h4>
+    <button class="btn btn-outline-primary">Refrescar</button>
+  </div>
+
+  <!-- 🔹 Derecha -->
+  <div class="d-flex align-items-center gap-2">
+    <div class="input-group" style="width: 250px;">
+      <input type="text" class="form-control" placeholder="Buscar cliente..." aria-label="Buscar cliente">
+      <button class="btn btn-outline-secondary" type="button">Buscar</button>
+    </div>
+    <button class="btn btn-success">Agregar Cliente</button>
+  </div>
+</div>
+
+
+    <table class="table table-bordered table-hover">
+    <thead class="table-info">
+        <tr>
+            <th scope="col">NOMBRE</th>
+            <th scope="col">DOCUMENTO</th>
+            <th scope="col">TELÉFONO</th>
+            <th scope="col">EMAIL</th>
+            <th scope="col">ESTADO</th>
+            <th scope="col"></th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @for (cliente of clientes; track $index) {
+        <tr>
+            <td>{{ cliente.nombreCliente}}</td>
+            <td>{{ cliente.documentoIdentidad}}</td>
+            <td>{{ cliente.telefono}}</td>
+            <td>{{ cliente.email}}</td>
+            <td>{{ cliente.activo}}</td>
+            <td>
+                <button class="btn btn-primary ms-4 me-4">Editar</button>
+            <button class="btn btn-danger">Eliminar</button>
+            </td>
+        </tr>    
+        }
+    </tbody>
+</table>
+</div>
