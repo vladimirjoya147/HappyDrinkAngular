@@ -1,0 +1,17 @@
+/* Hace que el body no tenga scroll general, sino en productos */
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+.position-sticky{
+  height: 85vh; 
+  background: #fff; 
+  padding: 1rem;
+  border: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+}
+.col-lg-8 {
+  scroll-behavior: smooth;
+}

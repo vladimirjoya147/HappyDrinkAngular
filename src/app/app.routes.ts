@@ -1,15 +1,15 @@
 import { RouterModule, Routes } from '@angular/router';
 import { Login } from './login/login';
-import { Productos } from './productos/productos';
+import { ProductosComponent } from './productosComponent/productosComponent';
 import { AuthGuard } from './core/Guards/auth.guard';
 import { NgModule } from '@angular/core';
+import { Principal } from './principal/principal';
 
 import { ClientesComponent } from './clientes/clientes.component';
 
 export const routes: Routes = [
     { path: 'login', component: Login},
-    { path: 'clientes', component: ClientesComponent, canActivate: [AuthGuard]},
-    { path:'productos', component: Productos, canActivate: [AuthGuard]},
+    { path: 'principal', component: Principal, canActivate: [AuthGuard] },
     { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: '**', redirectTo: 'login' }
 ];

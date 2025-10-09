@@ -58,4 +58,17 @@ export class AuthService {
       return [];
     }
   }
+
+  getUserId(): number | null {
+  const token = this.getToken();
+  if (!token) return null;
+
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.id || null; 
+  } catch (e) {
+    console.error('Error al extraer el ID del token:', e);
+    return null;
+  }
+}
 }
