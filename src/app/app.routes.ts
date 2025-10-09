@@ -5,6 +5,7 @@ import { AuthGuard } from './core/Guards/auth.guard';
 import { NgModule } from '@angular/core';
 import { Principal } from './principal/principal';
 
+import { ClientesComponent } from './clientes/clientes.component';
 
 export const routes: Routes = [
     { path: 'login', component: Login},
