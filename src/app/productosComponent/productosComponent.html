@@ -1,0 +1,100 @@
+<!-- === COMPONENTE PRODUCTOS === -->
+<div class="my-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="text-dark fw-semibold mb-0">
+      @if (isSearchMode()) {
+        Resultados de búsqueda
+      } @else {
+        Nuestros Productos
+      }
+    </h4>
+
+    <div class="d-flex" style="width: 300px;">
+      <input
+        class="form-control form-control-sm me-2"
+        type="text"
+        placeholder="Buscar producto..."
+        [value]="searchTerm()"
+        (input)="searchTerm.set($any($event.target).value)"
+        (keyup.enter)="buscarProductos()"
+      />
+      
+      @if (isSearchMode()) {
+        <button 
+          class="btn btn-outline-primary btn-sm me-1" 
+          title="Volver al listado general"
+          (click)="volverAlListadoGeneral()"
+        >
+          <i class="bi bi-list-ul"></i>
+        </button>
+      }
+      
+      <button 
+        class="btn btn-outline-secondary btn-sm me-1" 
+        title="Buscar"
+        (click)="buscarProductos()"
+      >
+        <i class="bi bi-search"></i>
+      </button>
+      
+      <button class="btn btn-outline-secondary btn-sm" title="Escanear código">
+        <i class="bi bi-upc-scan"></i>
+      </button>
+    </div>
+  </div>
+
+  @if (isSearchMode() && searchTerm()) {
+    <div class="alert alert-info py-2 mb-3">
+      <small>
+        <i class="bi bi-info-circle me-1"></i>
+        Buscando: "{{ searchTerm() }}"
+        <a href="javascript:void(0)" class="text-primary ms-2" (click)="volverAlListadoGeneral()">
+          <small>Volver a todos los productos</small>
+        </a>
+      </small>
+    </div>
+  }
+
+  @if (productoResourceActivo.isLoading()) {
+    <p class="text-center">Cargando...</p>
+  }
+  @else if (productoResourceActivo.error()) {
+    <p class="text-center text-danger">Error al cargar productos</p>
+  }
+  @else {
+    @let productList = productoResourceActivo.value();
+
+    @if (isSearchMode() && (!productList || !productList.content || productList.content.length === 0)){
+      <div class="text-center py-4">
+        <i class="bi bi-search display-4 text-muted"></i>
+        <p class="text-muted mt-2">No se encontraron productos para "{{ searchTerm() }}"</p>
+        <button class="btn btn-outline-primary btn-sm" (click)="volverAlListadoGeneral()">
+          Ver todos los productos
+        </button>
+      </div>
+    }
+    @else {
+      <div class="row g-3">
+        @for (item of productList?.content; track item.idProducto) {
+          <div class="col-6 col-md-4 col-lg-3">
+            <div class="card product-card shadow-sm border-0">
+              <img [src]="item.path" class="card-img-top product-img" alt="{{ item.nombre }}" />
+              <div class="card-body text-center p-2">
+                <h6 class="card-title text-dark text-truncate mb-1" title="{{ item.nombre }}">
+                  {{ item.nombre }}
+                </h6>
+                <p class="card-text text-muted small text-truncate mb-1" title="{{ item.descripcion }}">
+                  {{ item.descripcion }}
+                </p>
+                <p class="fw-bold text-danger mb-2">S/ {{ item.precioVenta }}</p>
+                <button class="btn btn-sm btn-danger w-100" (click)="agregarProducto(item)">
+                  <i class="bi bi-cart-plus"></i> Agregar
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>

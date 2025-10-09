@@ -1,0 +1,147 @@
+
+<div class="card shadow-sm border-0 sticky-sm-top " >
+  <div class="card-header text-white" style="background-color: #7a1f1f;">
+    <div class="d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">🛒 Carrito ({{carritoItems().length}})</h5>
+      <button class="btn btn-outline-light btn-sm" (click)="limpiarCarrito()">Vaciar</button>
+    </div>
+  </div>
+
+  <div class="card-body p-3">
+    <div class="mb-3">
+      @if (clienteSeleccionado) {
+        <div class="alert alert-success py-2 mb-0">
+          <i class="bi bi-person-check me-2"></i>
+          {{clienteSeleccionado.nombreCliente}}
+          <button class="btn btn-sm btn-outline-danger ms-2" 
+                  (click)="clienteSeleccionado = null; busquedaCliente = ''">
+            <i class="bi bi-x"></i>
+          </button>
+        </div>
+      } @else {
+        <div class="position-relative">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Buscar cliente..."
+            [(ngModel)]="busquedaCliente"
+            (input)="buscarCliente()"
+            (focus)="mostrarSugerencias = true"
+            (blur)="ocultarSugerencias()"
+            autocomplete="off"
+          />
+          @if (mostrarSugerencias && clientesFiltrados.length > 0) {
+            <ul class="list-group position-absolute w-100 shadow-sm mt-1" style="z-index: 1000;">
+              @for (c of clientesFiltrados; track c.idCliente) {
+                <li
+                  class="list-group-item list-group-item-action"
+                  (mousedown)="seleccionarCliente(c)"
+                >
+                  {{ c.nombreCliente }}
+                </li>
+              }
+            </ul>
+          }
+        </div>
+      }
+    </div>
+
+
+    <div class="mb-3">
+      <label class="form-label fw-semibold">Método de Pago</label>
+      <select class="form-select" [(ngModel)]="metodoPago">
+        <option value="EFECTIVO">Efectivo</option>
+        <option value="TRANSFERENCIA">Transferencia</option>
+        <option value="YAPE">Yape</option>
+      </select>
+    </div>
+
+    <div class="overflow-auto mb-3" style="max-height: 170px;"> 
+    @if (carritoItems().length === 0) {
+      <p class="text-center text-muted py-3">El carrito está vacío</p>
+    } @else {
+      @for (item of carritoItems(); track item.idProducto) {
+        <div class="cart-item d-flex align-items-center justify-content-between border-bottom pb-2 mb-2">
+          <div class="text-truncate" style="max-width: 170px;">
+            <strong>{{item.producto?.nombre}}</strong>
+            <div class="text-muted small">S/ {{item.precioUnitario}}</div>
+          </div>
+          <div class="d-flex align-items-center">
+            <button class="btn btn-sm btn-outline-secondary me-1" 
+                    (click)="decrementarCantidad(item.idProducto)">-</button>
+            <span class="mx-2">{{item.cantidad}}</span>
+            <button class="btn btn-sm btn-outline-secondary ms-1" 
+                    (click)="incrementarCantidad(item.idProducto)">+</button>
+          </div>
+          <button class="btn btn-sm text-danger ms-2" 
+                  (click)="eliminarDelCarrito(item.idProducto)">
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      }
+    }
+    </div>
+
+    <div class="d-flex justify-content-between">
+      <span>Subtotal:</span>
+      <strong>S/ {{subtotal().toFixed(2)}}</strong>
+    </div>
+
+    <div class="d-flex justify-content-between">
+      <span>IGV (18%):</span>
+      <strong>S/ {{igv().toFixed(2)}}</strong>
+    </div>
+
+    <hr />
+
+    <div class="d-flex justify-content-between align-items-end">
+      <h5 class="mb-0">Total:</h5>
+      <h5 class="text-danger mb-0 fw-bold">S/ {{total().toFixed(2)}}</h5>
+    </div>
+  </div>
+
+  <div class="d-grid mt-4">
+    <button class="btn btn-success fw-bold" 
+            (click)="confirmarVenta()"
+            [disabled]="carritoItems().length === 0 || !clienteSeleccionado">
+      <i class="bi bi-cash-stack me-2"></i> Pagar (S/ {{total().toFixed(2)}})
+    </button>
+  </div>
+</div>
+
+@if (mostrarModalExito) {
+<div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5)" aria-modal="true" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0 pb-0">
+        <button type="button" class="btn-close" (click)="cerrarModal()" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body text-center py-4">
+        <div class="mb-3">
+          <div class="rounded-circle bg-success d-inline-flex align-items-center justify-content-center" 
+                style="width: 80px; height: 80px;">
+            <i class="bi bi-check-lg text-white" style="font-size: 2rem;"></i>
+          </div>
+        </div>
+        
+        <h4 class="text-success mb-3">¡Venta Realizada con Éxito!</h4>
+        <p class="text-muted mb-4">La transacción se ha completado correctamente.</p>
+        
+        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+          <button type="button" 
+                  class="btn btn-outline-secondary me-md-2" 
+                  (click)="cerrarModal()">
+            <i class="bi bi-x-circle me-1"></i> Cerrar
+          </button>
+          <button type="button" 
+                  class="btn btn-danger" 
+                  (click)="descargarPDF()">
+            <i class="bi bi-file-earmark-pdf me-1"></i> Descargar PDF
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+}

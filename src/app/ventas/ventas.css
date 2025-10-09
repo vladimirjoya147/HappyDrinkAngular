@@ -1,0 +1,35 @@
+.sticky-top {
+    top: 1rem;
+    z-index: 1020;
+}
+/*
+.carrito-container {
+  max-height: 400px; 
+  overflow-y: auto; 
+  overflow-x: hidden; 
+}
+
+.carrito-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.carrito-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.carrito-container::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 10px;
+}
+
+.carrito-container::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+
+.cart-item {
+  min-height: 60px; 
+  flex-shrink: 0; 
+}
+*/

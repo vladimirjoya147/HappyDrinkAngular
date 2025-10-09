@@ -21,7 +21,7 @@ export class Login {
     this.error = null;
     this.authService.login(this.form).subscribe({
       next: () => {
-        this.router.navigate(['/productos']);
+        this.router.navigate(['/principal']);
       },
       error: () => {
         this.error = 'Credenciales inválidas';
