@@ -1,0 +1,43 @@
+<div class="page">
+
+<div class="d-flex align-items-center justify-content-between mb-3">
+  <h2 class="m-0">Lista de Roles</h2>
+  <a class="btn btn-primary btn-sm" routerLink="/roles/nuevo">Nuevo</a>
+</div>
+
+<table class="table">
+  <thead class="table-dark">
+    <tr>
+      <th >ID</th>
+      <th >Nombre del Rol</th>    
+      <th >Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let r of roles">
+      <th scope="row">{{ r.idRol}}</th>
+      <td>{{ r.nombreRol}}</td>
+      <td class="text-end">
+        <!-- EDITAR: navega a /roles/:id/editar -->
+        <button
+          class="btn btn-sm btn-outline-primary me-2"
+          [routerLink]="['/roles', r.idRol, 'editar']">
+          Editar
+        </button>
+
+        <!-- ELIMINAR: confirma, desactiva y muestra spinner mientras elimina -->
+        <button
+          class="btn btn-sm btn-outline-danger"
+          [disabled]="deletingId === r.idRol"
+          (click)="onDelete(r)">
+          <span *ngIf="deletingId === r.idRol" class="spinner-border spinner-border-sm me-1"></span>
+          Eliminar
+        </button>
+      </td>
+
+    </tr>
+    
+  </tbody>
+</table>
+
+</div>

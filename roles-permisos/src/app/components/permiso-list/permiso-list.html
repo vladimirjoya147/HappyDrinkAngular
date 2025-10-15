@@ -1,0 +1,36 @@
+<div class="page">
+
+<br>
+<h3>Listado dePermisos</h3>
+<br>
+
+<table class="table">
+  <thead class="table-dark">
+    <tr>
+      <th >ID</th>
+      <th >Asunto</th>
+      <th >Descripcion</th>
+      <th >Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let p of permisos">
+      <th scope="row">{{ p.idPermiso }}</th>
+      <td>{{ p.nombrePermiso }}</td>
+      <td>{{ p.descripcion }}</td>
+      <td>
+         <button type="button"  class="btn btn-sm btn-outline-primary me-2">
+            Editar
+        </button>
+
+        <button type="button"  class="btn btn-sm btn-outline-danger">
+            Eliminar
+        </button>
+
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+</div>

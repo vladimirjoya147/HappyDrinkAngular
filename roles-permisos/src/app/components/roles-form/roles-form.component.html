@@ -1,0 +1,24 @@
+<form [formGroup]="form" (ngSubmit)="save()" novalidate>
+  <input type="hidden" formControlName="idRol" />
+
+  <div class="mb-3">
+    <label class="form-label">Nombre del Rol</label>
+    <input type="text" class="form-control"
+           formControlName="nombreRol"
+           [class.is-invalid]="form.controls.nombreRol.touched && form.controls.nombreRol.invalid">
+    <div class="invalid-feedback" *ngIf="form.controls.nombreRol.errors?.['required']">
+      El nombre es obligatorio.
+    </div>
+    <div class="invalid-feedback" *ngIf="form.controls.nombreRol.errors?.['minlength']">
+      Mínimo 3 caracteres.
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-end gap-2">
+    <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">Cancelar</button>
+    <button type="submit" class="btn btn-primary" [disabled]="loading">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
+      Guardar
+    </button>
+  </div>
+</form>
