@@ -1,32 +1,44 @@
-<nav class="navbar navbar-expand-lg" style="background-color: #7a1f1f;">
-    <div class="container-fluid">
-        <a class="navbar-brand text-white fw-bold" href="#">Happydrink - Licorería</a>        
-    </div>
-</nav>
-
 <div class="login-container">
-    <div class="card login-card shadow-lg">
-        <h2 class="text-center text-white mb-4">Iniciar Sesión</h2>
-
-    <form (ngSubmit)="onLogin()">
-
-        <div class="mb-3">
-            <label class="form-label text-white">Usuario</label>
-            <input [(ngModel)]="form.username" name="username" class="form-control" required />
-        </div>
-        <div class="mb-3">
-            <label class="form-label text-white">Contraseña</label>
-            <input [(ngModel)]="form.password" name="password" type="password" class="form-control" required />
-        </div>
-        <div class="d-grid">
-            <button type="submit" class="btn btn-light fw-bold">Ingresar</button>
-        </div>
-
-    </form>
-
-
-    @if (error) {
-        <div class="text-center text-warning mt-3">{{ error }}</div>
-    }
+  <div class="login-card">
+    <h2>Iniciar Sesión</h2>
+    
+    <!-- Mostrar error si existe -->
+    <div *ngIf="error()" class="alert alert-error">
+      {{ error() }}
     </div>
-</div>
+
+    <button (click)="loginWithAuthServer()" class="btn btn-primary btn-large">
+      Iniciar Sesión con Auth Server
+    </button>
+
+    <!-- O mantener tu formulario tradicional si es necesario 
+    <div class="traditional-login" style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #dee2e6;">
+      <h3>Login Tradicional</h3>
+      <form (ngSubmit)="onLogin()">
+        <div class="form-group">
+          <label for="username">Usuario:</label>
+          <input 
+            type="text" 
+            id="username" 
+            [value]="username()" 
+            (input)="username.set($any($event.target).value)"
+            required>
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Contraseña:</label>
+          <input 
+            type="password" 
+            id="password" 
+            [value]="password()" 
+            (input)="password.set($any($event.target).value)"
+            required>
+        </div>
+        
+        <button type="submit" class="btn btn-secondary">
+          Iniciar Sesión
+        </button>
+      </form>
+    </div>
+  </div>
+</div>-->

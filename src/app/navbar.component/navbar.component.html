@@ -1,0 +1,37 @@
+<nav class="navbar navbar-expand-lg" style="background-color: #7a1f1f;">
+<div class="container-fluid">
+    <a class="navbar-brand text-white fw-bold" routerLink="/principal">
+        Happydrink - Licorería
+    </a>
+
+    <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a routerLink="/categorias" routerLinkActive="active" class="nav-link text-white">Categorías</a></li>
+            <li class="nav-item"><a routerLink="/proveedor" routerLinkActive="active" class="nav-link text-white">Proveedor</a></li>
+            <li class="nav-item"><a routerLink="/cliente" routerLinkActive="active" class="nav-link text-white">Cliente</a></li>
+            <li class="nav-item"><a routerLink="/productos" routerLinkActive="active" class="nav-link text-white">Productos</a></li>
+            <li class="nav-item"><a routerLink="/ventas" routerLinkActive="active" class="nav-link text-white">Ventas</a></li>
+            <li class="nav-item"><a routerLink="/rol" routerLinkActive="active" class="nav-link text-white">Rol</a></li>
+            <li class="nav-item"><a routerLink="/permisos" routerLinkActive="active" class="nav-link text-white">Permisos</a></li>
+        </ul>
+
+        <button 
+            class="btn btn-outline-light fw-semibold" 
+            (click)="logout()"
+            style="border-radius: 8px; padding: 6px 16px;">
+            <i class="bi bi-box-arrow-right me-1"></i> Cerrar sesión
+        </button>
+    </div>
+</div>
+</nav>

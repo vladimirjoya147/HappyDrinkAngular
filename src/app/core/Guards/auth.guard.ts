@@ -1,29 +1,20 @@
+// src/app/guards/auth.guard.ts
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/router';
+import { CanActivate, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
+  constructor(private authService: AuthService, private router: Router) {}
 
-    constructor(private authService: AuthService, private router: Router) {}
-
-    canActivate(route: ActivatedRouteSnapshot): boolean | UrlTree {
-
-    if (!this.authService.isAuthenticated()) {
-        return this.router.parseUrl('/login');
+   canActivate(): boolean {
+    if (this.authService.isLoggedIn()) {
+      return true;
+    } else {
+      this.router.navigate(['/login']);
+      return false;
     }
-    const requiredRoles = route.data['roles'] as string[]; 
-    if (requiredRoles && requiredRoles.length > 0) {
-        const userRoles = this.authService.getRoles();
-        const hasRole = requiredRoles.some(r => userRoles.includes(r));
-
-        if (!hasRole) {
-            return this.router.parseUrl('/forbidden'); 
-        }
-    }
-
-    return true;
-    }
+  }
 }

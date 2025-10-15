@@ -1,0 +1,109 @@
+
+<app-navbar></app-navbar> 
+<div class="container my-4">
+    <h2 class="mb-4 text-dark"><i class="bi bi-tags me-2"></i>Categorías</h2>
+
+    <div class="row mb-3">
+        <div class="col-md-8">
+        <input class="form-control" placeholder="Buscar ID o nombre" [(ngModel)]="busqueda" (keyup.enter)="buscar()" />
+        </div>
+        <div class="col-md-4">
+        <button class="btn btn-danger w-100" (click)="buscar()">Buscar</button>
+
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-danger text-white">
+        <h5 class="card-title mb-0 nuevacat"><i class="bi bi-plus-circle me-2"></i>Nueva categoría</h5>
+        </div>
+        <div class="card-body">
+        <form (ngSubmit)="guardar()">
+            <div class="row g-3 mb-2">
+            <div class="col-md-8">
+                <input class="form-control" placeholder="Nombre" [(ngModel)]="nueva.nombre" name="nombre" required>
+            </div>
+            <div class="col-md-4">
+                <select class="form-select" [(ngModel)]="nueva.activo" name="activo">
+                <option [value]="true">Activo</option>
+                <option [value]="false">Inactivo</option>
+                </select>
+            </div>
+            </div>
+            <div class="row g-3 text-end">
+            <div class="col-md-12">
+                <button class="btn btn-success"><i class="bi bi-check-circle me-1"></i>Agregar categoría</button>
+            </div>
+            </div>
+        </form>
+        </div>
+    </div>
+
+    <!-- Tabla de categorías -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-secondary text-white">
+        <h5 class="mb-0"><i class="bi bi-table me-2"></i>Lista de categorías</h5>
+        </div>
+        <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover table-striped mb-0">
+            <thead class="table-light">
+                <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Activo</th>
+                <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let cat of categorias; let i = index">
+                <td>{{ cat.idCategoria }}</td>
+                <td>{{ cat.nombre }}</td>
+                <td>
+                    <span class="badge" [ngClass]="cat.activo ? 'bg-success' : 'bg-danger'">
+                    {{ cat.activo ? 'Sí' : 'No' }}
+                    </span>
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-warning me-1" (click)="abrirModalEdicion(cat, i)">
+                    <i class="bi bi-pencil-square"></i>
+                    </button>
+                    <button class="btn btn-sm btn-secondary" (click)="toggleEstado(cat)">
+                    {{ cat.activo ? 'Desactivar' : 'Activar' }}
+                    </button>
+                </td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="modal fade" id="modalEdicionCategoria" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <form (ngSubmit)="guardarEdicion()">
+            <div class="modal-header">
+            <h5 class="modal-title">Editar categoría</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+            <div class="mb-2">
+                <input class="form-control" placeholder="Nombre" [(ngModel)]="edit.nombre" name="editNombre" required>
+            </div>
+            <div class="mb-2">
+                <select class="form-select" [(ngModel)]="edit.activo" name="editActivo">
+                <option [value]="true">Activo</option>
+                <option [value]="false">Inactivo</option>
+                </select>
+            </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Actualizar</button>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
