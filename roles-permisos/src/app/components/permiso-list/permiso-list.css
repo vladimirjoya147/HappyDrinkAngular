@@ -1,0 +1,4 @@
+.page {
+  width: min(80%, 1200px); /* 80% pero sin pasar de 1200px */
+  margin: 2rem auto;       /* centra y da margen vertical */
+}
