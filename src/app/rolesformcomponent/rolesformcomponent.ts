@@ -3,15 +3,15 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { finalize, take } from 'rxjs/operators';
-import { RolesService } from '../../service/roles.service';
-import { Roles } from '../../roles';
+import { RolesService } from '../core/services/roles.service';
+import { Roles } from '../Models/Roles';
 
 @Component({
   selector: 'app-roles-form',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './roles-form.component.html',
-  styleUrls: ['./roles-form.component.css']
+  templateUrl: './rolesformcomponent.html',
+  styleUrls: ['./rolesformcomponent.css']
 })
 export class RolesFormComponent implements OnInit {
   private fb = inject(FormBuilder);
@@ -32,7 +32,6 @@ export class RolesFormComponent implements OnInit {
     const p = this.route.snapshot.paramMap.get('id');
     this.id = p ? Number(p) : 0;
 
-    // asegura que el form tenga el id inmediatamente
     if (this.id) this.form.controls.idRol.setValue(this.id);
 
     if (this.id) {
@@ -56,7 +55,6 @@ export class RolesFormComponent implements OnInit {
 
     this.loading = true;
 
-    // fuerza que el id NUNCA sea null
     const dto = {
       idRol: this.form.value.idRol ?? this.id,
       nombreRol: (this.form.value.nombreRol || '').trim()
@@ -68,7 +66,7 @@ export class RolesFormComponent implements OnInit {
 
     req$.pipe(take(1), finalize(() => this.loading = false))
         .subscribe({
-          next: () => this.router.navigate(['/roles']),
+          next: () => this.router.navigate(['/rol']),
           error: (err) => {
             console.error('Guardar error', err);
             alert(`No se pudo guardar (status ${err?.status ?? '??'}). Revisa Network.`);
@@ -76,5 +74,6 @@ export class RolesFormComponent implements OnInit {
         });
   }
 
-  onCancel(): void { this.router.navigate(['/roles']); }
+  onCancel(): void { this.router.navigate(['/rol']); }
+  
 }

@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { Permisos } from '../../permisos';
-import { PermisoService } from '../../service/permisos.service';
+import { Permisos } from '../Models/Permisos';
+import { PermisoService } from '../core/services/permiso.service';
 import { CommonModule } from '@angular/common';
+import { NavbarComponent } from '../navbar.component/navbar.component';
 
 @Component({
   selector: 'app-permiso-list',
   standalone: true,
-  imports: [CommonModule],
-  templateUrl: './permiso-list.html',
-  styleUrls: ['./permiso-list.css']
+  imports: [CommonModule,NavbarComponent],
+  templateUrl: './permisoscomponent.html',
+  styleUrls: ['./permisoscomponent.css']
 })
 export class PermisoListComponent implements OnInit {
 

@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Roles } from '../roles';
+import { Roles } from 'src/app/Models/Roles';
 
 @Injectable({ providedIn: 'root' })
 export class RolesService {
- 
+
   private api = 'http://localhost:8080/api/rol';
 
   constructor(private http: HttpClient) {}
@@ -24,11 +24,10 @@ export class RolesService {
   }
 
   update(dto: { idRol: number; nombreRol: string }): Observable<Roles> {
-    // ajusta si tu backend usa PUT o PATCH, y el path
     return this.http.patch<Roles>(`${this.api}/actualizar`, dto);
   }
 
   delete(id: number) { 
     return this.http.delete<Roles>(`${this.api}/${id}`);
-   }
+  }
 }

@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink} from '@angular/router';
-import { RolesService  } from '../../service/roles.service';
-import { Roles } from '../../roles';
+import { RolesService } from '../core/services/roles.service';
+import { Roles } from '../Models/Roles';
+import { NavbarComponent } from "../navbar.component/navbar.component";
 
 
 @Component({
   selector: 'app-roles-list',
   standalone: true,
-  imports: [CommonModule, RouterLink], 
-  templateUrl: './roles-list.html',
-  styleUrls: ['./roles-list.css']
+  imports: [CommonModule, RouterLink, NavbarComponent], 
+  templateUrl: './roleslist-component.html',
+  styleUrls: ['./roleslist-component.css']
 })
 
 export class RolesListComponent implements OnInit {
