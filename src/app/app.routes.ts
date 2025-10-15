@@ -4,9 +4,8 @@ import { ProductosComponent } from './productosComponent/productosComponent';
 import { AuthGuard } from './core/Guards/auth.guard';
 import { NgModule } from '@angular/core';
 import { Principal } from './principal/principal';
-import { AuthCallbackComponent } from './auth-callback-component/auth-callback-component';
-import { CategoriasComponent } from './categoria.component/categoria.component';
-import { ProductosDetailsComponent } from './productosdetails.component/productosdetails.component';
+import { ClientesComponent } from './clientes/clientes.component';
+
 
 export const routes: Routes = [
     { path: 'login', component: Login },
