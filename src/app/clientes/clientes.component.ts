@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Cliente } from '../Models/Cliente';
 import { ClientesService } from '../core/services/clientes.service';
+import { NavbarComponent } from '../navbar.component/navbar.component';
 
 @Component({
   selector: 'app-clientes',
   standalone: true,
-  imports: [],
+  imports: [NavbarComponent],
   templateUrl: './clientes.component.html',
   styleUrl: './clientes.component.css'
 })
