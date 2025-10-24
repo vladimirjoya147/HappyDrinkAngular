@@ -26,7 +26,7 @@ interface DecodedToken {
   providedIn: 'root'
 })
 export class AuthService {
-  private authServerUrl = 'http://localhost:9000';
+  private authServerUrl = 'http://localhost:8080';
   private clientId = 'angular-client';
   private redirectUri = 'http://localhost:4200/auth-callback';
   private tokenEndpoint = `${this.authServerUrl}/oauth2/token`;

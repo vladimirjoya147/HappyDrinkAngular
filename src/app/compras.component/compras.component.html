@@ -1,0 +1,93 @@
+<app-navbar></app-navbar>
+
+<div class="container mt-4">
+    <h3 class="text-center mb-4">Listado de Compras</h3>
+
+    <div class="table-responsive mx-auto" style="max-width: 90%;">
+        <table class="table table-bordered table-striped align-middle text-center shadow">
+        <thead class="table-dark">
+            <tr>
+            <th>ID</th>
+            <th>Proveedor</th>
+            <th>Usuario</th>
+            <th>Fecha Compra</th>
+            <th>Total Compra</th>
+            <th>Fecha Recepción</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @for (c of compras; track $index) {
+            <tr>
+                <th scope="row">{{ c.idCompra }}</th>
+                <td>{{ c.nombreProveedor }}</td>
+                <td>{{ c.nombreCompleto }}</td>
+                <td>{{ c.fechaCompra | date:'short' }}</td>
+                <td>{{ c.totalCompra | currency:'PEN':'symbol':'1.2-2' }}</td>
+                <td>{{ c.fechaRecepcion | date:'short' }}</td>
+                <td>{{ c.estado }}</td>
+                <td>
+                <button
+                    type="button"
+                    class="btn btn-sm btn-outline-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#detalleModal"
+                    (click)="abrirDetalles(c.idCompra)"
+                >
+                    Detalles
+                </button>
+                </td>
+            </tr>
+            }
+        </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal Detalle Compra -->
+<div class="modal fade" id="detalleModal" tabindex="-1" aria-labelledby="detalleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+        <div class="modal-header bg-dark text-white">
+            <h5 class="modal-title" id="detalleModalLabel">Detalle de Compra #{{ compraSeleccionada }}</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+            @if (detalles.length > 0) {
+            <table class="table table-striped text-center align-middle">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Costo Unitario</th>
+                </tr>
+                </thead>
+                <tbody>
+                @for (d of detalles; track d.idDetalleCompra) {
+                    <tr>
+                    <td>{{ d.idDetalleCompra }}</td>
+                    <td>{{ d.nombre }}</td>
+                    <td>{{ d.cantidad }}</td>
+                    <td>{{ d.costoUnitario | currency:'PEN':'symbol':'1.2-2' }}</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+            } @else {
+            <p class="text-center text-muted m-0">No hay detalles para esta compra.</p>
+            }
+
+            <ng-template #sinDetalles>
+            <p class="text-center text-muted m-0">No hay detalles para esta compra.</p>
+            </ng-template>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+        </div>
+    </div>
+</div>
+

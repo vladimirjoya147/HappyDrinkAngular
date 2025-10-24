@@ -8,6 +8,7 @@ import { ClientesComponent } from './clientes/clientes.component';
 import { AuthCallbackComponent } from './auth-callback-component/auth-callback-component';
 import { ProductosDetailsComponent } from './productosdetails.component/productosdetails.component';
 import { CategoriasComponent } from './categoria.component/categoria.component';
+import { ComprasComponent } from './compras.component/compras.component';
 //import { RolesListComponent } from './roleslist-component/roleslist-component';
 //import { PermisoListComponent } from './permisoscomponent/permisoscomponent';
 //import { RolesFormComponentç } from './rolesformcomponent/rolesformcomponent';
@@ -18,6 +19,7 @@ export const routes: Routes = [
     { path: 'auth-callback', component: AuthCallbackComponent }, 
     { path: 'principal', component: Principal, canActivate: [AuthGuard]},
     { path: 'cliente', component:ClientesComponent, canActivate:[AuthGuard]},
+    { path: 'compras', component: ComprasComponent, canActivate: [AuthGuard]},
     { path: 'categorias', component: CategoriasComponent, canActivate: [AuthGuard]},
     { path: 'productos', component: ProductosDetailsComponent, canActivate: [AuthGuard]},
     { path: 'rol', loadComponent:()=> import('./roleslist-component/roleslist-component').then(m=>m.RolesListComponent), canActivate: [AuthGuard]},
@@ -25,7 +27,7 @@ export const routes: Routes = [
     { path: 'roles/nuevo', loadComponent: () => import('./rolesformcomponent/rolesformcomponent').then(m => m.RolesFormComponent) },
     { path: 'roles/:id/editar', loadComponent: () => import('./rolesformcomponent/rolesformcomponent').then(m => m.RolesFormComponent) },
     { path: 'ventas', component: Principal, canActivate: [AuthGuard] },
-    { path: '', redirectTo: 'principal', pathMatch: 'full' },
+    { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: '**', redirectTo: 'principal' }
 ];
 
