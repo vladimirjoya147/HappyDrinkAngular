@@ -5,6 +5,6 @@ export interface Cliente{
     telefono: string;
     email: string;
     direccion: string;
-    activo: number;
+    activo: number | boolean;
 
 }
