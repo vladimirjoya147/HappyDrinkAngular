@@ -56,16 +56,20 @@ export class AuthService {
 }
 
 
-  exchangeCodeForToken(code: string): Observable<any> {
+exchangeCodeForToken(code: string): Observable<any> {
   const codeVerifier = localStorage.getItem('pkce_verifier') || '';
-  const clientSecret = 'angular-secret'; 
+
+  console.log('=== PKCE DEBUG ===');
+  console.log('Code:', code);
+  console.log('Code Verifier:', codeVerifier);
+  console.log('Code Verifier length:', codeVerifier.length);
+  console.log('==================');
 
   const body = new HttpParams()
     .set('grant_type', 'authorization_code')
     .set('code', code)
     .set('redirect_uri', this.redirectUri)
     .set('client_id', this.clientId)
-    .set('client_secret', clientSecret)
     .set('code_verifier', codeVerifier);
 
   const headers = new HttpHeaders({
@@ -74,12 +78,14 @@ export class AuthService {
 
   return this.http.post(this.tokenEndpoint, body.toString(), { headers }).pipe(
     tap((tokens: any) => {
-      console.log("acces_token: "+ tokens.access_token)
-      console.log("refresh _token: "+tokens.refresh_token)
-      console.log("id_token"+tokens.id_token)
+      console.log("Token response:", tokens);
       localStorage.setItem('access_token', tokens.access_token);
-      localStorage.setItem('refresh_token', tokens.refresh_token);
-      localStorage.setItem('id_token', tokens.id_token); 
+      if (tokens.refresh_token) {
+        localStorage.setItem('refresh_token', tokens.refresh_token);
+      }
+      if (tokens.id_token) {
+        localStorage.setItem('id_token', tokens.id_token);
+      }
     })
   );
 }
@@ -121,22 +127,34 @@ export class AuthService {
     return localStorage.getItem('access_token');
   }
 
-  private generateCodeVerifier(): string {
-    const array = new Uint8Array(32);
-    crypto.getRandomValues(array);
-    return btoa(String.fromCharCode(...array))
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/=/g, '');
+ private generateCodeVerifier(): string {
+  const array = new Uint8Array(32);
+  crypto.getRandomValues(array);
+  let base64 = '';
+  for (let i = 0; i < array.length; i++) {
+    base64 += String.fromCharCode(array[i]);
   }
+  
+  return btoa(base64)
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=/g, '');
+}
 
-  private async generateCodeChallenge(verifier: string): Promise<string> {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(verifier);
-    const digest = await crypto.subtle.digest('SHA-256', data);
-    const base64Digest = btoa(String.fromCharCode(...new Uint8Array(digest)));
-    return base64Digest.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-  }
+  
+private async generateCodeChallenge(verifier: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(verifier);
+  
+
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashString = String.fromCharCode(...hashArray);
+  return btoa(hashString)
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=/g, '');
+}
 
   isLoggedIn(): boolean {
     const token = localStorage.getItem('access_token');
