@@ -1,5 +1,4 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Proovedor } from '../Models/proovedor.model';
 import { ProveedorRequestDTO, ProveedorResponseDTO, ProveedorService } from '../core/services/proveedor.service';
 import { finalize } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -9,18 +8,18 @@ import { FormsModule } from '@angular/forms';
 declare const Swal: any;
 
 @Component({
-  selector: 'app-proovedor',
+  selector: 'app-proveedor',
   imports: [NavbarComponent, CommonModule, FormsModule],
-  templateUrl: './proovedor.html',
-  styleUrl: './proovedor.css'
+  templateUrl: './proveedor.html',
+  styleUrl: './proveedor.css'
 })
-export class ProovedorComponent implements OnInit {
+export class ProveedorComponent implements OnInit {
 
-  proovedores: ProveedorResponseDTO[] = [];
-  proovedorSeleccionado?: ProveedorResponseDTO;
+  proveedores: ProveedorResponseDTO[] = [];
+  proveedorSeleccionado?: ProveedorResponseDTO;
   busqueda: string = '';
 
-  formProovedor: ProveedorRequestDTO = {
+  formProveedor: ProveedorRequestDTO = {
     idProveedor: undefined, // Opcional
     nombreProveedor: '',
     ruc: '',
@@ -39,15 +38,15 @@ export class ProovedorComponent implements OnInit {
   constructor(private proovedorService: ProveedorService) { }
 
   ngOnInit(): void {
-    this.listarProovedor();
+    this.listarProveedor();
   }
 
-  listarProovedor(): void {
+  listarProveedor(): void {
     this.proovedorService.listarProveedores().subscribe(
       {
         next: (data) => {
-          this.proovedores = data; // Ya tiene el tipo ProveedorResponseDTO[]
-          console.log('Proovedores cargados:', this.proovedores);
+          this.proveedores = data; // Ya tiene el tipo ProveedorResponseDTO[]
+          console.log('Proveedores cargados:', this.proveedores);
         },
         error: (error) => {
           console.error('Error al cargar proveedores', error);
@@ -59,14 +58,14 @@ export class ProovedorComponent implements OnInit {
 
   buscarProveedores(): void {
     if (!this.busqueda.trim()) {
-      this.listarProovedor();
+      this.listarProveedor();
       return;
     }
 
     this.proovedorService.buscarProveedores(this.busqueda).subscribe({
       next: (data) => {
-        this.proovedores = data;
-        console.log('Resultado búsqueda:', this.proovedores);
+        this.proveedores = data;
+        console.log('Resultado búsqueda:', this.proveedores);
       },
       error: (error) => {
         console.error('Error al buscar proveedores', error);
@@ -75,22 +74,22 @@ export class ProovedorComponent implements OnInit {
     });
   }
 
-  guardarProovedor(): void {
-    if (!this.formProovedor.nombreProveedor?.trim() || !this.formProovedor.ruc?.trim()) {
+  guardarProveedor(): void {
+    if (!this.formProveedor.nombreProveedor?.trim() || !this.formProveedor.ruc?.trim()) {
       Swal.fire('Atención', 'El Nombre y RUC son obligatorios', 'warning');
       return;
     }
 
     const action = this.isEditMode ? 'Actualizar' : 'Guardar';
-    
+
     Swal.fire({
       title: this.isEditMode ? 'Actualizando...' : 'Guardando...',
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading()
     });
 
-    // Como formProovedor ya es ProveedorRequestDTO, lo usamos directamente como payload
-    const payload: ProveedorRequestDTO = this.formProovedor; 
+    // Como formProveedor ya es ProveedorRequestDTO, lo usamos directamente como payload
+    const payload: ProveedorRequestDTO = this.formProveedor;
 
     const serviceCall = this.isEditMode
       ? this.proovedorService.actualizarProveedor(payload)
@@ -101,7 +100,7 @@ export class ProovedorComponent implements OnInit {
           Swal.close();
           Swal.fire('Listo', `${action} proveedor exitoso`, 'success');
           this.cerrarModalCrearEditar();
-          this.listarProovedor();
+          this.listarProveedor();
         },
         error: (err) => {
           console.error(`Error al ${action.toLowerCase()}`, err);
@@ -111,12 +110,12 @@ export class ProovedorComponent implements OnInit {
     });
   }
 
-  cambiarEstadoProovedor(proovedor: ProveedorResponseDTO): void {
-    const nuevoEstado = !proovedor.activo;
+  cambiarEstadoProveedor(proveedor: ProveedorResponseDTO): void {
+    const nuevoEstado = !proveedor.activo;
     const accionTexto = nuevoEstado ? 'activar' : 'desactivar';
 
     Swal.fire({
-      title: `¿Seguro que deseas ${accionTexto} al proveedor ${proovedor.nombreProveedor}?`,
+      title: `¿Seguro que deseas ${accionTexto} al proveedor ${proveedor.nombreProveedor}?`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Sí, confirmar',
@@ -130,12 +129,12 @@ export class ProovedorComponent implements OnInit {
         });
 
         // idProveedor existe en ResponseDTO, usamos el operador '!' para afirmar
-        this.proovedorService.cambiarEstado(proovedor.idProveedor, nuevoEstado)
+        this.proovedorService.cambiarEstado(proveedor.idProveedor, nuevoEstado)
           .pipe(finalize(() => Swal.close()))
           .subscribe({
             next: () => {
               Swal.fire('Listo', `Proveedor ${accionTexto} correctamente`, 'success');
-              this.listarProovedor();
+              this.listarProveedor();
             },
             error: (err) => {
               console.error('Error al cambiar estado', err);
@@ -153,29 +152,29 @@ export class ProovedorComponent implements OnInit {
   abrirModalCrearNuevo(): void {
     this.isEditMode = false;
     // Reseteamos el formulario con la estructura de ProveedorRequestDTO
-    this.formProovedor = {
+    this.formProveedor = {
       nombreProveedor: '',
       ruc: '',
       telefono: '',
       email: '',
       direccion: '',
-      activo: true, 
+      activo: true,
       idProveedor: undefined
     };
     this.abrirModal(this.modalCrearEditarRef);
   }
 
   // Recibimos un ResponseDTO para editar
-  abrirModalEditar(proovedor: ProveedorResponseDTO): void {
+  abrirModalEditar(proveedor: ProveedorResponseDTO): void {
     this.isEditMode = true;
     // Clonamos el ResponseDTO al RequestDTO del formulario
-    this.formProovedor = { ...proovedor };
+    this.formProveedor = { ...proveedor };
     this.abrirModal(this.modalCrearEditarRef);
   }
 
   // Recibimos un ResponseDTO para el detalle
-  abrirModalDetalle(proovedor: ProveedorResponseDTO): void {
-    this.proovedorSeleccionado = proovedor;
+  abrirModalDetalle(proveedor: ProveedorResponseDTO): void {
+    this.proveedorSeleccionado = proveedor;
     this.abrirModal(this.modalDetalleRef);
   }
 
@@ -205,6 +204,6 @@ export class ProovedorComponent implements OnInit {
 
   refrescar(): void {
     this.busqueda = '';
-    this.listarProovedor();
+    this.listarProveedor();
   }
 }
