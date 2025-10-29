@@ -9,6 +9,7 @@ import { AuthCallbackComponent } from './auth-callback-component/auth-callback-c
 import { ProductosDetailsComponent } from './productosdetails.component/productosdetails.component';
 import { CategoriasComponent } from './categoria.component/categoria.component';
 import { ComprasComponent } from './compras.component/compras.component';
+import { ProveedorComponent } from './proveedor/proveedor'; 
 //import { RolesListComponent } from './roleslist-component/roleslist-component';
 //import { PermisoListComponent } from './permisoscomponent/permisoscomponent';
 //import { RolesFormComponentç } from './rolesformcomponent/rolesformcomponent';
@@ -22,6 +23,7 @@ export const routes: Routes = [
     { path: 'compras', component: ComprasComponent, canActivate: [AuthGuard]},
     { path: 'categorias', component: CategoriasComponent, canActivate: [AuthGuard]},
     { path: 'productos', component: ProductosDetailsComponent, canActivate: [AuthGuard]},
+    {path: 'proveedor', component:ProveedorComponent, canActivate:[AuthGuard]},
     { path: 'rol', loadComponent:()=> import('./roleslist-component/roleslist-component').then(m=>m.RolesListComponent), canActivate: [AuthGuard]},
     { path: 'permisos', loadComponent:()=> import('./permisoscomponent/permisoscomponent').then(m=>m.PermisoListComponent), canActivate: [AuthGuard]},
     { path: 'roles/nuevo', loadComponent: () => import('./rolesformcomponent/rolesformcomponent').then(m => m.RolesFormComponent) },
