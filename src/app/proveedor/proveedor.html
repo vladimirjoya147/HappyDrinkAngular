@@ -1,0 +1,161 @@
+<app-navbar></app-navbar>
+
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <div class="d-flex align-items-center gap-3">
+      <h4 class="mb-0">Gestor de Proveedores</h4>
+      <button class="btn btn-outline-primary" (click)="refrescar()">Refrescar</button>
+    </div>
+
+    <div class="d-flex align-items-center gap-2">
+      <div class="input-group" style="width: 250px;">
+        <input 
+          [(ngModel)]="busqueda" 
+          type="text" 
+          class="form-control" 
+          placeholder="Buscar RUC/Nombre..." 
+          aria-label="Buscar proveedor" 
+          (keyup.enter)="buscarProveedores()"
+        >
+        <button class="btn btn-outline-secondary" type="button" (click)="buscarProveedores()">Buscar</button>
+      </div>
+      <button class="btn btn-success" (click)="abrirModalCrearNuevo()">Agregar Proveedor</button>
+    </div>
+  </div>
+  
+  ---
+  
+  <table class="table table-bordered table-hover">
+    <thead class="table-info">
+      <tr>
+        <th scope="col">NOMBRE</th>
+        <th scope="col">RUC</th>
+        <th scope="col">TELÉFONO</th>
+        <th scope="col">EMAIL</th>
+        <th scope="col">ESTADO</th>
+        <th scope="col" style="width: 150px;">ACCIONES</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+      @for (proveedor of proveedores; track proveedor.idProveedor) {
+        <tr>
+          <td>{{ proveedor.nombreProveedor }}</td>
+          <td>{{ proveedor.ruc }}</td>
+          <td>{{ proveedor.telefono }}</td>
+          <td>{{ proveedor.email }}</td>
+          <td>
+            <span class="badge" [class.bg-success]="proveedor.activo" [class.bg-danger]="!proveedor.activo">
+              {{ proveedor.activo ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
+          <td class="text-center">
+            <button class="btn btn-sm btn-outline-primary me-1" title="Ver Detalle" (click)="abrirModalDetalle(proveedor)">
+              <i class="bi bi-eye"></i>
+            </button>
+
+            <button class="btn btn-sm btn-outline-warning me-1" title="Editar" (click)="abrirModalEditar(proveedor)">
+              <i class="bi bi-pencil"></i>
+            </button>
+
+            <button class="btn btn-sm"
+                    [class.btn-outline-danger]="proveedor.activo"
+                    [class.btn-outline-success]="!proveedor.activo"
+                    title="{{ proveedor.activo ? 'Desactivar' : 'Activar' }}"
+                    (click)="cambiarEstadoProveedor(proveedor)">
+              <i class="bi" [class.bi-trash]="proveedor.activo" [class.bi-check-circle]="!proveedor.activo"></i>
+            </button>
+          </td>
+        </tr>
+      }
+      @empty {
+        <tr>
+          <td colspan="6" class="text-center text-muted">No se encontraron proveedores.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+---
+
+<div #modalCrearEditar class="modal fade" tabindex="-1" aria-hidden="true" aria-labelledby="modalCrearEditarLabel">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalCrearEditarLabel">
+            @if (isEditMode) {
+              Editar Proveedor
+            } @else {
+              Agregar Proveedor
+            }
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="guardarProveedor()">
+          <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input [(ngModel)]="formProveedor.nombreProveedor" name="nombreProveedor" class="form-control" required />
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">RUC</label>
+              <input [(ngModel)]="formProveedor.ruc" name="ruc" class="form-control" required />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Teléfono</label>
+              <input [(ngModel)]="formProveedor.telefono" name="telefono" class="form-control" />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input [(ngModel)]="formProveedor.email" name="email" class="form-control" type="email" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Dirección</label>
+            <input [(ngModel)]="formProveedor.direccion" name="direccion" class="form-control" />
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="cerrarModalCrearEditar()">Cancelar</button>
+            <button type="submit" class="btn btn-primary">
+              {{ isEditMode ? 'Actualizar' : 'Guardar' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+
+<div #modalDetalle class="modal fade" tabindex="-1" aria-hidden="true" aria-labelledby="modalDetalleLabel">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalDetalleLabel">Detalle Proveedor</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        @if (proveedorSeleccionado) {
+          <div>
+            <p><strong>ID Proveedor:</strong> {{ proveedorSeleccionado.idProveedor }}</p>
+            <p><strong>Nombre:</strong> {{ proveedorSeleccionado.nombreProveedor }}</p>
+            <p><strong>RUC:</strong> {{ proveedorSeleccionado.ruc }}</p>
+            <p><strong>Teléfono:</strong> {{ proveedorSeleccionado.telefono }}</p>
+            <p><strong>Email:</strong> {{ proveedorSeleccionado.email }}</p>
+            <p><strong>Dirección:</strong> {{ proveedorSeleccionado.direccion }}</p>
+            <p><strong>Estado:</strong> {{ proveedorSeleccionado.activo ? 'Activo' : 'Inactivo' }}</p>
+          </div>
+        } @else {
+           <p class="text-muted">Seleccione un proveedor para ver el detalle.</p>
+        }
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="cerrarModalDetalle()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
