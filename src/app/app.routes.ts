@@ -9,6 +9,7 @@ import { AuthCallbackComponent } from './auth-callback-component/auth-callback-c
 import { ProductosDetailsComponent } from './productosdetails.component/productosdetails.component';
 import { CategoriasComponent } from './categoria.component/categoria.component';
 import { ComprasComponent } from './compras.component/compras.component';
+import { ProveedorComponent } from './proveedor/proveedor';
 //import { RolesListComponent } from './roleslist-component/roleslist-component';
 //import { PermisoListComponent } from './permisoscomponent/permisoscomponent';
 //import { RolesFormComponentç } from './rolesformcomponent/rolesformcomponent';
@@ -18,6 +19,7 @@ export const routes: Routes = [
     { path: 'login', component: Login },
     { path: 'auth-callback', component: AuthCallbackComponent }, 
     { path: 'principal', component: Principal, canActivate: [AuthGuard]},
+    { path: 'proveedor', component: ProveedorComponent, canActivate: [AuthGuard]},
     { path: 'cliente', component:ClientesComponent, canActivate:[AuthGuard]},
     { path: 'compras', component: ComprasComponent, canActivate: [AuthGuard]},
     { path: 'categorias', component: CategoriasComponent, canActivate: [AuthGuard]},
